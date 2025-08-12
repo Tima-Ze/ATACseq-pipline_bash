@@ -1,0 +1,10 @@
+original_data/
+data/
+ref/
+results/
+report/
+*.gz
+*.fa
+*.out
+*.err
+
