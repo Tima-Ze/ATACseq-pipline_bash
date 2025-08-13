@@ -1,7 +1,4 @@
----
-title: "ATACseq-pipeline_bash"
-output: github_document
----
+### This workflow is still ongoing and is being worked on in the master branch.
 
 # ATACseq-pipeline_bash
 
