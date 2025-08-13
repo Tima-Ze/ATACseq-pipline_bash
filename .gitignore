@@ -3,7 +3,7 @@ data/
 ref/
 results/
 report/
- multiqc_data/
+multiqc_data/
 *.gz
 *.fa
 *.out

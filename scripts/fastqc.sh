@@ -1,16 +1,18 @@
 #!/bin/bash
 #SBATCH -J fastqc
 #SBATCH -D /data/scratch/timaz/atac
-#SBATCH -o out.out
+#SBATCH -o report/fastqc.out
 #SBATCH --partition=nowick
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=10
 #SBATCH --mem=4G
 #SBATCH --time=30-00:00:00
-#SBATCH --mail-type=end
-#SBATCH --mail-user=timaz@zedat.fu-berlin.de
 
-fastqc $1 -o results/fastqc/
+set -euo pipefail
 
-# execute by:cat filename.txt | parallel sbatch job.sh
-#Filename.txt include fastq files names with their path
+mkdir -p results/fastqc
+
+# Find all FASTQ(.gz) files and run fastqc in parallel
+find data/fastq -maxdepth 1 -type f \( -name "*.fastq.gz" \) \
+| parallel -j $SLURM_CPUS_PER_TASK \
+    fastqc {} -o results/fastqc/
