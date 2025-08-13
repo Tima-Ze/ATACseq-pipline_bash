@@ -3,8 +3,11 @@ data/
 ref/
 results/
 report/
+ multiqc_data/
 *.gz
 *.fa
 *.out
 *.err
-
+*.txt
+pairs_list.txt
+multiqc_report.html
