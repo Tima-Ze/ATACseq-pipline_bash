@@ -4,7 +4,7 @@
 #SBATCH --partition=nowick
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=64G
+#SBATCH --mem=125G
 #SBATCH -o report/bowtie.out
 #SBATCH -e report/bowtie.err
 #SBATCH --time=30-00:00:00
@@ -19,7 +19,7 @@ awk '{
     sample     = $3
     print minus_val1, plus_val2, sample
 }' pairs_list.txt | 
-parallel --colsep ' ' -j 16 '
+parallel --colsep ' ' -j 5 '
     val1={1}
     val2={2}
     sample={3}
@@ -29,7 +29,7 @@ parallel --colsep ' ' -j 16 '
     bowtie2 -x ref/index \
             -1 results/trim_galore/"$val1" \
             -2 results/trim_galore/"$val2" \
-            -p 16 \
+            -p 5 \
             --very-sensitive \
     | samtools view -u - \
     | samtools sort -o "results/bam/${sample}.bam" -

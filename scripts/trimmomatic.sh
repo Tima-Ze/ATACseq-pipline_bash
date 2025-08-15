@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-#SBATCH -J trim
+#SBATCH -J Trimmomatic
 #SBATCH -D /data/scratch/timaz/atac
 #SBATCH --partition=nowick
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=10
 #SBATCH --mem=40G
-#SBATCH -o report/trimm.out
-#SBATCH -e report/trimm.err
+#SBATCH -o report/trimmomatic.out
+#SBATCH -e report/trimmomatic.err
 #SBATCH --time=30-00:00:00
 
 set -euo pipefail

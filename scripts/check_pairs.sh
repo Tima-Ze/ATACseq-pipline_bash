@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=10G
-#SBATCH -o /data/scratch/timaz/atac/report/check_pairs.out
+#SBATCH -o report/check_pairs.out
 #SBATCH -e report/check_pairs.err
 
 set -euo pipefail

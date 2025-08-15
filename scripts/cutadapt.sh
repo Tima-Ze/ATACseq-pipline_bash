@@ -12,15 +12,9 @@ set -euo pipefail
 
 mkdir -p results/cutadapt
 
-pairs_file="pairs_list.txt"
-if [[ ! -f "$pairs_file" ]]; then
-    echo "Error: $pairs_file not found. Run check_pairs.sh first."
-    exit 1
-fi
-
 parallel --colsep '\s+' -j 10 '
-    minus_file={1}
-    plus_file={2}
+    read1={1}
+    read2={2}
     sample={3}
 
     echo "Running cutadapt for $sample"
@@ -28,8 +22,8 @@ parallel --colsep '\s+' -j 10 '
              -e 0.1 \
              --overlap=15 \
              --cores=10 \
-             -o results/cutadapt/$(basename "$minus_file") \
-             -p results/cutadapt/$(basename "$plus_file") \
-             "$minus_file" \
-             "$plus_file"
+             -o results/cutadapt/$(basename "$read1") \
+             -p results/cutadapt/$(basename "$read2") \
+             "$read1" \
+             "$read2"
 ' :::: "$pairs_file"

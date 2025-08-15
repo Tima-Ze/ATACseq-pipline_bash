@@ -15,17 +15,16 @@ mkdir -p results/trim_galore
 mkdir -p results/fastqc/trim_galore
 
 parallel --colsep '\s+' -j 10 '
-  minus_file={1}
-  plus_file={2}
+  read1={1}
+  read2={2}
   sample={3}
 
   echo "Running trim_galore PE for $sample"
 
-  trim_galore --paired --nextera --cores 4 \
-  --fastqc --fastqc_args "--outdir /results/fastqc/trim_galore/" \
+  trim_galore --paired --nextera --cores 10 \
   --stringency 6 --length 36\
   --output_dir results/trim_galore \
-  "$minus_file" "$plus_file"
+  "$read1" "$read2"
 ' :::: pairs_list.txt
 
 
