@@ -10,9 +10,9 @@
 
 set -euo pipefail
 
-mkdir -p results/fastqc
+mkdir -p results/fastqc/fastq
 
 # Find all FASTQ(.gz) files and run fastqc in parallel
 find data/fastq -maxdepth 1 -type f \( -name "*.fastq.gz" \) \
 | parallel -j $SLURM_CPUS_PER_TASK \
-    fastqc {} -o results/fastqc/
+    fastqc {} -o results/fastqc/fastq/
