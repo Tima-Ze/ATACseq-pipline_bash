@@ -9,4 +9,4 @@
 #SBATCH --time=30-00:00:00
 #SBATCH --mail-type=end
 #SBATCH --mail-user=timaz@zedat.fu-berlin.de
-bowtie2-build --threads 8 ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+bowtie2-build --threads 8 ref/*.fa.gz
