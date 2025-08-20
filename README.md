@@ -24,6 +24,18 @@ If you prefer **Trimmomatic** or **cutadapt**, edit `pipeline.sh` and uncomment 
 Bowtie2 is used for this regard, for that the reference sequence must be indexed. So:
 - **It is required that the reference genome be kept in the `ref/` directory with the `fa.gz` extension.**
 
+```mermaid
+flowchart TD
+    A[FASTQ QC <br/> fastqc] --> B[QC report check <br/> multiqc]
+    B --> C[Adaptor trimming <br/> trim_galore / trimmomatic / cutadapt]
+    C --> D[QC <br/> fastqc + multiqc]
+    D --> E[Read map <br/> Bowtie2 (with genome indexing)]
+    E --> F[Mitochondrial read removal <br/> samtools]
+    F --> G[Duplicate removal <br/> gatk4]
+```
+
+
+
 ## Usage
 To execute all preprocessing steps in one go, simply run:
 
