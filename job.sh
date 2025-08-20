@@ -3,39 +3,32 @@
 #SBATCH -D /data/scratch/timaz/atac
 #SBATCH --partition=nowick
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=64G
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=10G
 #SBATCH -o report/filter_dup.out
 #SBATCH -e report/filter_dup.err
 #SBATCH --time=30-00:00:00
+#SBATCH --array=1-10
 
 mkdir -p results/bam_noDup
 mkdir -p results/bam_noDup/dup_metrics
 
-ls results/bam_noMT/*.bam | parallel -j 16 '
-    sample=$(basename {} .bam_noMT.bam)
-    rgid=${sample}
-    rglb=lib1
-    rgpl=ILLUMINA
-    rgpu=unit1
-    rgsm=${sample}
+bam=$(ls results/bam_noMT/*.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
+sample=$(basename "$bam" .fastq.gz_noMT.bam)
 
-    picard AddOrReplaceReadGroups \
-        I={} \
-        O=results/bam_noMT/${sample}_rg.bam \
-        RGID=$rgid \
-        RGLB=$rglb \
-        RGPL=$rgpl \
-        RGPU=$rgpu \
-        RGSM=$rgsm \
-        VALIDATION_STRINGENCY=LENIENT
+# Define tmpdir
+SCRATCH_ROOT=${SCRATCH_ROOT:-/tmp} 
+tmpdir="${SCRATCH_ROOT}/${sample}"
+mkdir -p "$tmpdir"
 
-    picard MarkDuplicates \
-        I=results/bam_noMT/${sample}_rg.bam \
-        O=results/bam_noDup/${sample}_noDup.bam \
-        M=results/bam_noDup/dup_metrics/${sample}_dup_metrics.txt \
-        REMOVE_DUPLICATES=true \
-        VALIDATION_STRINGENCY=LENIENT
-'
-
-
+samtools addreplacerg \
+    -r ID:$sample -r LB:lib1 -r PL:ILLUMINA -r PU:unit1 -r SM:$sample \
+    $bam -o "$tmpdir/${sample}_rg.bam"
+gatk MarkDuplicatesSpark \
+    -I "$tmpdir/${sample}_rg.bam" \
+    -O results/bam_noDup/${sample}_noDup.bam \
+    -M results/bam_noDup/dup_metrics/${sample}_dup_metrics.txt \
+    --remove-all-duplicates true \
+    --tmp-dir "${tmpdir}" \
+    --spark-runner LOCAL \
+    --spark-master local[8]

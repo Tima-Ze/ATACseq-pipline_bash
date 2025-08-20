@@ -22,9 +22,6 @@ ls results/bam/*.bam | parallel -j 8 '
     keep=$(samtools idxstats {} | cut -f 1 | grep -v "^MT$")
     samtools view -@ 2 -b -h {} $keep > results/bam_noMT/{/.}_noMT.bam
 '
-
-# Step 3: Index the new BAMs
-echo "Indexing BAMs without MT..."
-ls results/bam_noMT/*.bam | parallel -j 8 'samtools index {}'
-
 echo "Done!"
+
+rm results/bam/*.bai
