@@ -24,6 +24,10 @@ If you prefer **Trimmomatic** or **cutadapt**, edit `pipeline.sh` and uncomment 
 Bowtie2 is used for this regard, for that the reference sequence must be indexed. So:
 - **It is required that the reference genome be kept in the `ref/` directory with the `fa.gz` extension.**
 
+## Usage
+`bash pipline.sh`
+This will auto execute all pre-processes below:
+
 ## Flowchart
 ```mermaid
 graph TD;
