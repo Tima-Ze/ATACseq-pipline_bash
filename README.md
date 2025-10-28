@@ -6,18 +6,10 @@ This repository contains **bash scripts** for preprocessing ATAC-seq data starti
 
 ## Overview
 The scripts automate common preprocessing steps for ATAC-seq analysis.  
-All raw FASTQ files should be stored in the `data/fastq` directory before running the pipeline.
+All raw FASTQ files should be stored in the `data/fastq` directory before running the pipeline (with *.fastq.gz extension).
 
 ## Good to Know
-1- Adaptor trimming:
-There are three scripts available for adapter trimming:
-
-- **Trimmomatic**
-- **cutadapt**
-- **trim_galore** *(default)*
-
-By default, `trim_galore` is used in the pipeline.
-If you prefer **Trimmomatic** or **cutadapt**, edit `pipeline.sh` and uncomment the corresponding lines.
+1- Adaptor trimming: `trim_galore` is used in the pipeline.
 
 2- Mapping reads against the reference genome:
 
